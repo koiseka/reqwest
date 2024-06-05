@@ -270,6 +270,15 @@ impl RequestBuilder {
         self.header_sensitive(crate::header::AUTHORIZATION, header_value, true)
     }
 
+    /// Enable HTTP res authentication.
+    pub fn res_auth<T>(self, user_id: T, token: T) -> RequestBuilder
+    where
+        T: fmt::Display,
+    {
+        let header_value = format!("res {user_id}:{token}");
+        self.header_sensitive(crate::header::AUTHORIZATION, header_value, true)
+    }
+
     /// Set the request body.
     pub fn body<T: Into<Body>>(mut self, body: T) -> RequestBuilder {
         if let Ok(ref mut req) = self.request {
